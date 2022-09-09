@@ -45,11 +45,9 @@ or on/between SSDs.
 
 1. Command-line-interface version to run headlessly in terminals.
 
-2. Progress-bar to liven up the GUI a bit.
+2. More efficient checksum-retry. Currently if a checksum fails the entire item is retried. This is perfect for files, but can be slow for large folder structures, as the entire folder is re-copied instead of just the corrupted file. The idea is to only re-copy the corrupted files.
 
-3. More efficient checksum-retry. Currently if a checksum fails the entire item is retried. This is perfect for files, but can be slow for large folder structures, as the entire folder is re-copied instead of just the corrupted file. The idea is to only re-copy the corrupted files.
-
-4. Duplicate detection and prevention.
+3. Duplicate detection and prevention.
 
 ---
 
