@@ -1,6 +1,7 @@
 package GUI;
 
 import Copy.ControllerCopy;
+import Copy.ModelCopy;
 import Queue.ModelQueue;
 
 import javax.swing.*;
@@ -27,6 +28,7 @@ public class ViewGUI extends JFrame {
     private JScrollPane scrollPaneCopyList;
     private JScrollPane scrollPaneChecksumList;
     private JScrollPane scrollPaneCompletedList;
+    private JProgressBar progressBarCompleted;
 
     private boolean verifyChecksum;
     private int threadCount;
@@ -36,6 +38,8 @@ public class ViewGUI extends JFrame {
     private ExecutorService controllerService;
     public static boolean controllerRunning;
     private static boolean shutdownGUIService;
+
+    private int copyListAmount;
 
     public ViewGUI() {
 
@@ -55,7 +59,12 @@ public class ViewGUI extends JFrame {
 
             if (controllerRunning) return;
 
-            if (! ModelQueue.retrieve(1).isEmpty() || ! ModelQueue.retrieve(2).isEmpty()) ModelQueue.reset();
+            if (! ModelQueue.retrieve(1).isEmpty() || ! ModelQueue.retrieve(2).isEmpty()) {
+
+                ModelQueue.reset();
+                this.copyListAmount = 0;
+
+            }
 
             JFileChooser fileDirChooser = new JFileChooser();
 
@@ -105,6 +114,13 @@ public class ViewGUI extends JFrame {
 
             controllerRunning = true;
 
+            SwingUtilities.invokeLater(() -> {
+
+                this.progressBarCompleted.setMaximum(ModelQueue.retrieve(0).size());
+                this.copyListAmount = progressBarCompleted.getMaximum();
+
+            });
+
             controllerService.submit(new ControllerCopy(verifyChecksum, threadCount, destinationDir));
 
         });
@@ -128,15 +144,19 @@ public class ViewGUI extends JFrame {
 
                     switch (i) {
 
-                        case 0 -> SwingUtilities.invokeLater(() -> textAreaCopyList.setText(sBuilder.toString()));
+                        case 0 -> SwingUtilities.invokeLater(() -> this.textAreaCopyList.setText(sBuilder.toString()));
 
-                        case 1 -> SwingUtilities.invokeLater(() -> textAreaChecksumList.setText(sBuilder.toString()));
+                        case 1 -> SwingUtilities.invokeLater(() -> this.textAreaChecksumList.setText(sBuilder.toString()));
 
-                        case 2 -> SwingUtilities.invokeLater(() -> textAreaCompletedList.setText(sBuilder.toString()));
+                        case 2 -> SwingUtilities.invokeLater(() -> this.textAreaCompletedList.setText(sBuilder.toString()));
 
                     }
 
                 }
+
+                if (copyListAmount > 0)
+                    SwingUtilities.invokeLater(() -> this.progressBarCompleted.setValue(ModelQueue.retrieve(2).size()));
+                else progressBarCompleted.setValue(0);
 
                 Thread.sleep(512L);
 

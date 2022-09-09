@@ -7,7 +7,6 @@ import java.io.File;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class ControllerCopy implements Runnable {
 
@@ -28,13 +27,25 @@ public class ControllerCopy implements Runnable {
     @Override
     public void run() {
 
-        modelLatch = new CountDownLatch(ModelQueue.retrieve(0).size());
+        boolean successfulTransfer = false;
         ExecutorService modelService = Executors.newFixedThreadPool(threadCount);
 
-        for (String dirFile : ModelQueue.retrieve(0)) modelService.submit(new ModelCopy(dirFile, doChecksum, new File(destinationDir)));
+        while (! successfulTransfer) {
 
-        try { modelLatch.await(); }
-        catch (InterruptedException e) { throw new RuntimeException(e); }
+            modelLatch = new CountDownLatch(ModelQueue.retrieve(0).size());
+
+            for (String dirFile : ModelQueue.retrieve(0))
+                modelService.submit(new ModelCopy(dirFile, doChecksum, new File(destinationDir)));
+
+            try {
+
+                modelLatch.await();
+                successfulTransfer = ModelQueue.retrieve(0).isEmpty();
+
+            }
+            catch (InterruptedException e) { throw new RuntimeException(e); }
+
+        }
 
         ViewGUI.controllerRunning = false;
 

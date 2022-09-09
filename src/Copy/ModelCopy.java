@@ -31,7 +31,7 @@ public class ModelCopy implements Runnable {
         Stack<File> dirQueue = new Stack<>();
         dirQueue.push(rootDir);
 
-        while (! dirQueue.isEmpty()) {
+        while (!dirQueue.isEmpty()) {
 
             File[] dirList = dirQueue.pop().listFiles();
 
@@ -40,7 +40,8 @@ public class ModelCopy implements Runnable {
                 for (File currentItem : dirList) {
 
                     if (currentItem.isDirectory()) dirQueue.push(currentItem);
-                    else if (currentItem.isFile()) hashConcat.append(DigestUtils.sha256Hex(new BufferedInputStream(new FileInputStream(currentItem))));
+                    else if (currentItem.isFile())
+                        hashConcat.append(DigestUtils.sha256Hex(new BufferedInputStream(new FileInputStream(currentItem))));
 
                 }
 
@@ -55,50 +56,47 @@ public class ModelCopy implements Runnable {
     @Override
     public void run() {
 
-        boolean successfulTransfer = false;
+        boolean successfulTransfer;
 
-        while (! successfulTransfer) {
+        File dirFile = new File(dirFileString);
 
-            File dirFile = new File(dirFileString);
+        try {
 
-            try {
+            if (dirFile.isFile()) FileUtils.copyFileToDirectory(dirFile, destinationDir);
+            else if (dirFile.isDirectory()) FileUtils.copyDirectoryToDirectory(dirFile, destinationDir);
 
-                if (dirFile.isFile()) FileUtils.copyFileToDirectory(dirFile, destinationDir);
-                else if (dirFile.isDirectory()) FileUtils.copyDirectoryToDirectory(dirFile, destinationDir);
+            if (doChecksum) {
 
-                if (doChecksum) {
+                ModelQueue.update(dirFileString, 1);
 
-                    ModelQueue.update(dirFileString, 1);
+                String srcHash = "";
+                String destHash = "";
 
-                    String srcHash = "";
-                    String destHash = "";
+                String destItem = new File(destinationDir.getAbsolutePath() + File.separator + dirFile.getName()).getAbsolutePath();
 
-                    if (dirFile.isFile()) {
+                if (dirFile.isFile()) {
 
-                        String destFile = destinationDir.getAbsolutePath() + File.separator + dirFile.getName();
+                    srcHash = DigestUtils.sha256Hex(new BufferedInputStream(new FileInputStream(dirFile)));
+                    destHash = DigestUtils.sha256Hex(new BufferedInputStream(new FileInputStream(destItem)));
 
-                        srcHash = DigestUtils.sha256Hex(new BufferedInputStream(new FileInputStream(dirFile)));
-                        destHash = DigestUtils.sha256Hex(new BufferedInputStream(new FileInputStream(destFile)));
+                } else if (dirFile.isDirectory()) {
 
-                    } else if (dirFile.isDirectory()) {
+                    srcHash = DigestUtils.sha256Hex(getDirHashConcat(dirFile));
+                    destHash = DigestUtils.sha256Hex(getDirHashConcat(new File(destItem)));
 
-                        String destDir = destinationDir.getAbsolutePath() + File.separator + dirFile.getName();
+                }
 
-                        srcHash = DigestUtils.sha256Hex(getDirHashConcat(dirFile));
-                        destHash = DigestUtils.sha256Hex(getDirHashConcat(new File(destDir)));
+                successfulTransfer = srcHash.equals(destHash);
 
-                    }
+            } else successfulTransfer = true;
 
-                    successfulTransfer = srcHash.equals(destHash);
-                    if (! successfulTransfer) ModelQueue.update(dirFileString, 0);
+            if (successfulTransfer) ModelQueue.update(dirFileString, 2);
+            else ModelQueue.update(dirFileString, 0);
 
-                } else successfulTransfer = true;
+        } catch (IOException e) {
 
-                ModelQueue.update(dirFileString, 2);
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            // TODO: 09/09/2022 Log Cause
+            ModelQueue.update(dirFileString, 0);
 
         }
 
