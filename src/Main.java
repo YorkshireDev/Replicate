@@ -1,5 +1,4 @@
 import GUI.ViewGUI;
-import Queue.ModelQueue;
 
 import javax.swing.*;
 
@@ -10,8 +9,6 @@ public class Main {
             ClassNotFoundException,
             InstantiationException,
             IllegalAccessException {
-
-        ModelQueue.reset();
 
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         SwingUtilities.invokeLater(ViewGUI::new);
