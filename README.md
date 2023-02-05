@@ -35,9 +35,13 @@ or on/between SSDs.
 
 4. Graphical user interface that shows the stage (copy(ing), checksum, completed) that each individual file/folder is in.
 
-5. Multithreaded copying (as mentioned above), each item in the Copy list will get assigned its own thread to copy in parallel. Thread-count is limited by number of CPU threads.
+5. Multithreaded copying (as mentioned above), each item in the transfer list will get assigned its own thread to copy in parallel. Thread-count is limited by number of CPU threads. Smaller files will have more parallelism than larger files in an attempt to not bog down a drive.
 
-6. Checksum (as mentioned above) will not only verify integrity of files/folders, but will restart the copy for that file/folder if the file/folder is corrupted.
+6. Checksum (as mentioned above) will not only verify integrity of files, but will restart the copy for that file if the file is corrupted in-flight.
+
+7. Ability to set a limit on how many times to retry a transfer/checksum (default is 8). Set it to -1 for infinite retries.
+
+8. Duplicate prevention and other input filtering are present.
 
 ---
 
@@ -45,24 +49,20 @@ or on/between SSDs.
 
 1. Command-line-interface version to run headlessly in terminals.
 
-2. More efficient checksum-retry. Currently if a checksum fails the entire item is retried. This is perfect for files, but can be slow for large folder structures, as the entire folder is re-copied instead of just the corrupted file. The idea is to only re-copy the corrupted files.
-
-3. Duplicate detection and prevention.
-
 ---
 
 # Usage
 
 1. Double click the `Replicate.jar` file provided, or open up a terminal and type `java -jar Replicate.jar`
 
-2. Click the "Source" button and choose a file, multiple files (with ctrl-click or shift-click), a folder, or multiple folders (with ctrl-click or shift-click), and then press "Select".
+2. Click the "Select Source" button and choose a file, multiple files (with ctrl-click or shift-click), a folder, or multiple folders (with ctrl-click or shift-click), and then press "Select".
 
 3. Continue to repeat this process until you've selected everything you wanted to copy from anywhere on the system.
 
-4. Click the "Destination" button and choose a folder. This is where all the file(s) and/or folder(s) will be copied to.
+4. Click the "Select Destination" button and choose a folder. This is where all the file(s) and/or folder(s) will be copied to. Directory structures are preserved.
 
-5. Click the "Confirm" button.
+5. Click the "Start" button.
 
-6. Once all the items are in the "Completed" list on the right, the copy is fully complete and you may either continue or close the program.
+6. Once all the items are in the "Completed List" on the right, the copy is fully complete and you may either continue or close the program.
 
-7. Feel free to toggle the checkboxes as described in the `Features (Current)` section. Note that these cannot be changed during the copy process.
+7. Feel free to toggle the checkboxes as described in the "Options" menu. Note that these apply once "Start" is pressed and cannot be modified during a copy.
