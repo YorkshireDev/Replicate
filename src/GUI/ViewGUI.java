@@ -82,9 +82,7 @@ public class ViewGUI extends JFrame {
 
                 if (sourceList != null) {
 
-                    this.transferListSet.clear();
-                    this.transferListModel.clear();
-                    this.completedListModel.clear();
+                    if (! completedListModel.isEmpty()) this.completedListModel.clear();
 
                     String destinationDir = labelDestinationDirectory.getText();
 
@@ -185,9 +183,16 @@ public class ViewGUI extends JFrame {
 
     }
 
-    public void updateConfirmButton() {
+    public void updateViewFinishState () {
 
-        SwingUtilities.invokeLater(() -> this.buttonConfirm.setText(BUTTON_CONFIRM_STATE_LIST[2]));
+        SwingUtilities.invokeLater(() -> {
+
+            this.transferListSet.clear();
+            this.transferListModel.clear();
+
+            this.buttonConfirm.setText(BUTTON_CONFIRM_STATE_LIST[2]);
+
+        });
 
     }
 

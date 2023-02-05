@@ -48,6 +48,8 @@ public class ControllerCopy implements Runnable {
     @Override
     public void run() {
 
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+
         ModelQueue.initFileQueueSystem(useThreading);
 
         List<File[]> srcDstList = new ModelFilter(fileList, destDir).getFilteredFileList();
@@ -123,7 +125,7 @@ public class ControllerCopy implements Runnable {
 
         }
 
-        this.viewGUI.updateConfirmButton();
+        this.viewGUI.updateViewFinishState();
         ViewGUI.guiLatch.countDown();
 
     }
