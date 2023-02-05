@@ -32,7 +32,7 @@ public class ViewGUI extends JFrame {
     private JLabel labelDestinationDirectory;
     private JLabel labelCompletedCount;
 
-    private static final String[] BUTTON_CONFIRM_STATE_LIST = {"Start", "Stop", "Done"};
+    private static final String[] BUTTON_CONFIRM_STATE_LIST = {"Start", "In-Progress", "Done"};
 
     private static final int RETRY_AMOUNT_MAX_VALUE = 32;
 
@@ -140,31 +140,21 @@ public class ViewGUI extends JFrame {
 
         buttonConfirm.addActionListener(e -> {
 
-            System.out.println(1.0);
-
             if (guiLatch.getCount() > 0) return;
-
-            System.out.println(1.1);
 
             if (transferListModel.isEmpty()) return;
             if (labelDestinationDirectory.getText().equals("N/A")) return;
 
             guiLatch = new CountDownLatch(1);
 
-            System.out.println(1.2);
-
             boolean useThreading = checkBoxUseThreading.isSelected();
             boolean doChecksum = checkBoxDoChecksum.isSelected();
             int retryCount = (int) spinnerRetryAmount.getValue();
-
-            System.out.println(1.3);
 
             this.buttonConfirm.setText(BUTTON_CONFIRM_STATE_LIST[1]);
 
             ExecutorService controllerService = Executors.newSingleThreadExecutor();
             controllerService.submit(new ControllerCopy(this, useThreading, doChecksum, retryCount, new File(labelDestinationDirectory.getText()), transferListModel));
-
-            System.out.println(1.4);
 
         });
 

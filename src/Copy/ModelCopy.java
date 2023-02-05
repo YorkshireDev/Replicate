@@ -83,8 +83,6 @@ class ModelCopy implements Runnable {
                     throw new RuntimeException(e);
                 }
 
-                System.out.println(srcFileChecksum + " <-> " + dstFileChecksum);
-
                 if (srcFileChecksum.equals(dstFileChecksum)) operationSuccessful = true;
                 else {
                     if (retryCount > -1) {
@@ -95,8 +93,6 @@ class ModelCopy implements Runnable {
             } else operationSuccessful = true;
 
         }
-
-        System.out.println("Global Retries: " + retriesGlobal);
 
         this.finishedSrcFileString = srcFile.getAbsolutePath();
         ControllerCopy.copyLatch.countDown();

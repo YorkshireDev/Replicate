@@ -84,8 +84,6 @@ public class ControllerCopy implements Runnable {
 
         for (int qT = 0; qT < modelCopyPriorityList.size(); qT++) {
 
-            System.out.println(qT + " -> " + modelCopyPriorityList.get(qT).size());
-
             copyLatch = new CountDownLatch(modelCopyPriorityList.get(qT).size());
 
             Set<ModelCopy> completedModelCopySet = new HashSet<>();
