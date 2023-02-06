@@ -15,7 +15,7 @@ or on/between SSDs.
 
 1. **Windows**\*, **Linux**\** or **macOS**\***
 2. **Java 17** Runtime or Greater
-3. (For Developers Only) **Apache Commons IO 2.11.0** and **Apache Commons Codec 1.15**
+3. (For Developers Only) **Apache Commons IO 2.11.0**, **Apache Commons Codec 1.15** and **Zip4j**
 
 \* Developed and Tested on Windows 10 21H2 64-bit
 
@@ -43,11 +43,15 @@ or on/between SSDs.
 
 8. Duplicate prevention and other input filtering are present.
 
+9. Option to compress the selected files/folders at the end (may be very slow!)
+
 ---
 
 # Features (Upcoming)
 
 1. Command-line-interface version to run headlessly in terminals.
+
+2. Ability to remove files from the transfer list in-case of mistakes.
 
 ---
 
