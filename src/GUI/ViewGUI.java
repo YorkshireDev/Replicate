@@ -32,6 +32,7 @@ public class ViewGUI extends JFrame {
     private JLabel labelDestinationDirectory;
     private JLabel labelCompletedCount;
     private JCheckBox checkBoxCompress;
+    private JButton buttonRemoveFromTransferList;
 
     private static final String[] BUTTON_CONFIRM_STATE_LIST = {"Start", "In-Progress", "Done"};
 
@@ -108,6 +109,20 @@ public class ViewGUI extends JFrame {
                 }
 
                 fileChooserCurrentDirectory = new File(FILE_CHOOSER.getCurrentDirectory().getAbsolutePath());
+
+            }
+
+        });
+
+        buttonRemoveFromTransferList.addActionListener(e -> {
+
+            if (guiLatch.getCount() > 0) return;
+            if (transferListModel.isEmpty()) return;
+
+            for (String item : transferList.getSelectedValuesList()) {
+
+                transferListModel.removeElement(item);
+                transferListSet.remove(item);
 
             }
 
@@ -214,6 +229,7 @@ public class ViewGUI extends JFrame {
         this.spinnerRetryAmount.setValue(8);
 
         this.buttonSelectSource.setText("Select Source");
+        this.buttonRemoveFromTransferList.setText("Remove Item(s)");
         this.buttonSelectDestination.setText("Select Destination");
 
         this.scrollPaneTransferList.setViewportView(transferList);
