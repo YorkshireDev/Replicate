@@ -3,16 +3,16 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Replicate_jar</output-path>
     <root id="archive" name="Replicate.jar">
       <element id="module-output" name="Replicate" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-io-2.11.0/commons-io-2.11.0.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-io-2.11.0/commons-io-2.11.0-tests.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-io-2.11.0/commons-io-2.11.0-javadoc.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-io-2.11.0/commons-io-2.11.0-sources.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-io-2.11.0/commons-io-2.11.0-test-sources.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-codec-1.15/commons-codec-1.15.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-codec-1.15/commons-codec-1.15-tests.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-codec-1.15/commons-codec-1.15-javadoc.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-codec-1.15/commons-codec-1.15-sources.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-codec-1.15/commons-codec-1.15-test-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-io-2.11.0/commons-io-2.11.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-io-2.11.0/commons-io-2.11.0-tests.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-io-2.11.0/commons-io-2.11.0-javadoc.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-io-2.11.0/commons-io-2.11.0-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dependencies/commons-io-2.11.0/commons-io-2.11.0-test-sources.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

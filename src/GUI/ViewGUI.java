@@ -31,6 +31,7 @@ public class ViewGUI extends JFrame {
     private JScrollPane scrollPaneCompletedList;
     private JLabel labelDestinationDirectory;
     private JLabel labelCompletedCount;
+    private JCheckBox checkBoxCompress;
 
     private static final String[] BUTTON_CONFIRM_STATE_LIST = {"Start", "In-Progress", "Done"};
 
@@ -148,11 +149,12 @@ public class ViewGUI extends JFrame {
             boolean useThreading = checkBoxUseThreading.isSelected();
             boolean doChecksum = checkBoxDoChecksum.isSelected();
             int retryCount = (int) spinnerRetryAmount.getValue();
+            boolean compressAfterCopy = checkBoxCompress.isSelected();
 
             this.buttonConfirm.setText(BUTTON_CONFIRM_STATE_LIST[1]);
 
             ExecutorService controllerService = Executors.newSingleThreadExecutor();
-            controllerService.submit(new ControllerCopy(this, useThreading, doChecksum, retryCount, new File(labelDestinationDirectory.getText()), transferListModel));
+            controllerService.submit(new ControllerCopy(this, useThreading, doChecksum, retryCount, compressAfterCopy, new File(labelDestinationDirectory.getText()), transferListModel));
 
         });
 
@@ -222,6 +224,8 @@ public class ViewGUI extends JFrame {
 
         this.labelDestinationDirectory.setText("N/A");
         labelCompletedCount.setText("N/A");
+
+        this.checkBoxCompress.setText("Compress After Copy");
 
         this.setContentPane(panelMain);
         this.setTitle("Replicate");

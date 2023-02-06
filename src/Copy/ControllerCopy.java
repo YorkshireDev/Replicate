@@ -21,6 +21,7 @@ public class ControllerCopy implements Runnable {
     private final boolean useThreading;
     private final boolean doChecksum;
     private final int retryCount;
+    private final boolean compressAfterCopy;
 
     private final File destDir;
     private final List<File> fileList;
@@ -29,6 +30,7 @@ public class ControllerCopy implements Runnable {
                           boolean useThreading,
                           boolean doChecksum,
                           int retryCount,
+                          boolean compressAfterCopy,
                           File destDir,
                           DefaultListModel<String> transferListModel) {
 
@@ -37,6 +39,7 @@ public class ControllerCopy implements Runnable {
         this.useThreading = useThreading;
         this.doChecksum = doChecksum;
         this.retryCount = retryCount;
+        this.compressAfterCopy = compressAfterCopy;
 
         this.destDir = destDir;
 
@@ -122,6 +125,20 @@ public class ControllerCopy implements Runnable {
 
             try { copyLatch.await(); }
             catch (InterruptedException e) { throw new RuntimeException(e); }
+
+        }
+
+        if (compressAfterCopy) {
+
+            File[] dstDirArray = destDir.listFiles();
+
+            Set<String> fileNameSet = new HashSet<>(fileList.stream().map(File::getName).toList());
+
+            if (dstDirArray != null) {
+                for (File dstDirItem : dstDirArray) {
+                    if (fileNameSet.contains(dstDirItem.getName())) new ModelCompress(dstDirItem).doCompression();
+                }
+            }
 
         }
 
