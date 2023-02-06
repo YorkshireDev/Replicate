@@ -45,6 +45,8 @@ or on/between SSDs.
 
 9. Option to compress the selected files/folders at the end (may be very slow!)
 
+10. Select items in the transfer list (clicking, shift-clicking, control-clicking) and then click the "Remove Item(s)" button to remove items before copying.
+
 ---
 
 # Features (Upcoming)
