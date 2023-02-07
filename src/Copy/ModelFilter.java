@@ -42,7 +42,10 @@ class ModelFilter {
 
                 for (File rootDir : rootDirList) {
                     if (currentItemFile.getAbsolutePath().contains(rootDir.getAbsolutePath())) {
-                        String dstDirString = currentItemFile.getAbsolutePath().replace(rootDir.getParentFile().getAbsolutePath(), dstDir.getAbsolutePath() + File.separator);
+                        String rootDirReplace;
+                        try { rootDirReplace = rootDir.getParentFile().getAbsolutePath(); }
+                        catch (Exception ignored) { rootDirReplace = rootDir.getAbsolutePath(); }
+                        String dstDirString = currentItemFile.getAbsolutePath().replace(rootDirReplace, dstDir.getAbsolutePath() + File.separator);
                         File currentDstItemFile = new File(dstDirString).getAbsoluteFile();
                         srcDstList.get(srcDstListIndex)[1] = currentDstItemFile;
                         break;
